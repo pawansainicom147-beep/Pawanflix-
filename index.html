@@ -920,7 +920,7 @@
         <p id="modalDesc"></p>
         <div class="modal-actions">
           <button class="close-btn" onclick="closeModal()">Close</button>
-          <a class="watch-btn" id="modalTrailer" target="_blank">Trailer</a>
+          <a class="watch-btn" onclick="playTrailer('dQw4w9WgXcQ')">
         </div>
       </div>
     </div>
@@ -1245,9 +1245,29 @@
         searchInput.style.animation = "";
       }, 1200);
     });
+</script>
 
-    renderTrending();
-    renderWatchlist();
-  </script>
+<div id="videoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:9999;">
+  
+  <div style="width:100%; max-width:900px;">
+    
+    <iframe
+      id="videoFrame"
+      width="100%"
+      height="220"
+      src=""
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      style="border-radius:16px; background:black;">
+    </iframe>
+
+    <button onclick="closeVideo()" style="margin-top:10px; padding:10px 20px; background:red; color:white; border:none; border-radius:8px;">
+      Close
+    </button>
+
+  </div>
+</div>
+
 </body>
-        </html>
+</html>
