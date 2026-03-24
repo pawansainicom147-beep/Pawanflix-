@@ -867,7 +867,7 @@
     </section>
 
     <div class="footer">
-      Made by <strong>Pawan</strong> 🫶🏻
+      Made by <strong>Pawan</strong>⚡️
     </div>
   </div>
 
@@ -919,7 +919,7 @@
   </div>
 
   <script>
-    const TMDB_TOKEN= "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MjUyZmVhZDY4Nzc3NTY1YjgyN2FjY2IzN2Q1NGM0YSIsIm5iZiI6MTc3NDI3MDYzMS4zMDcwMDAyLCJzdWIiOiI2OWMxMzhhN2ViNWRkNDk3Mjk3YjMzNGEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.P-SK-nYwxDnKAjl6xTyayUVqnf9KjpyZ9ctYF4NV9I8....;
+    const TMDB_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MjUyZmVhZDY4Nzc3NTY1YjgyN2FjY2IzN2Q1NGM0YSIsIm5iZiI6MTc3NDI3MDYzMS4zMDcwMDAyLCJzdWIiOiI2OWMxMzhhN2ViNWRkNDk3Mjk3YjMzNGEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.P-SK-nYwxDnKAjl6xTyayUVqnf9KjpyZ9ctYF4NV9I8...;
     const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 
     const heroSlides = [
@@ -1305,5 +1305,362 @@
     renderTrending();
     renderWatchlist();
   </script>
+  <style>
+  :root{
+    --bg:#0b1020;
+    --card:#121a2f;
+    --text:#eaf1ff;
+    --muted:#9fb0d3;
+    --accent:#6ea8fe;
+    --accent2:#8b5cf6;
+    --border:rgba(255,255,255,0.08);
+    --shadow:0 10px 30px rgba(0,0,0,0.25);
+  }
+
+  body.light-mode{
+    --bg:#f7f9fc;
+    --card:#ffffff;
+    --text:#101828;
+    --muted:#5b6475;
+    --accent:#2563eb;
+    --accent2:#7c3aed;
+    --border:rgba(0,0,0,0.08);
+    --shadow:0 10px 30px rgba(0,0,0,0.08);
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    transition:background .3s ease,color .3s ease;
+  }
+
+  .top-progress{
+    position:fixed;
+    top:0;
+    left:0;
+    width:0%;
+    height:4px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    z-index:99999;
+    box-shadow:0 0 15px rgba(110,168,254,.6);
+    transition:width .15s linear;
+  }
+
+  .floating-tools{
+    position:fixed;
+    right:16px;
+    bottom:16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:9999;
+  }
+
+  .tool-btn{
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--card),rgba(255,255,255,0.06));
+    color:var(--text);
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+    cursor:pointer;
+    font-size:18px;
+    backdrop-filter:blur(10px);
+    transition:transform .2s ease, opacity .2s ease;
+  }
+
+  .tool-btn:hover{
+    transform:translateY(-2px) scale(1.04);
+  }
+
+  .back-to-top{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .back-to-top.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .toast-wrap{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+  }
+
+  .toast{
+    min-width:220px;
+    max-width:90vw;
+    padding:12px 16px;
+    border-radius:14px;
+    background:rgba(18,26,47,.92);
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:var(--shadow);
+    animation:toastIn .25s ease;
+    font-size:14px;
+  }
+
+  body.light-mode .toast{
+    background:rgba(16,24,40,.95);
+  }
+
+  @keyframes toastIn{
+    from{opacity:0; transform:translateY(12px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:all .6s ease;
+  }
+
+  .reveal.active{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .glass-card{
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(12px);
+  }
+
+  .skeleton{
+    position:relative;
+    overflow:hidden;
+    background:rgba(255,255,255,0.06);
+    border-radius:12px;
+  }
+
+  .skeleton::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-150%;
+    width:120%;
+    height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+    animation:shine 1.2s infinite;
+  }
+
+  @keyframes shine{
+    100%{ left:150%; }
+  }
+
+  .spotlight{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    background:
+      radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(110,168,254,.10), transparent 40%);
+  }
+
+  .search-highlight{
+    outline:2px solid var(--accent);
+    border-radius:12px;
+    box-shadow:0 0 0 6px rgba(110,168,254,.08);
+    transition:all .3s ease;
+  }
+
+  .kbd-tip{
+    position:fixed;
+    left:16px;
+    bottom:16px;
+    background:rgba(18,26,47,.88);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:10px 12px;
+    font-size:13px;
+    z-index:9999;
+    box-shadow:var(--shadow);
+  }
+
+  .kbd{
+    padding:2px 7px;
+    border-radius:8px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.08);
+    margin:0 4px;
+    font-family:monospace;
+  }
+
+  @media (max-width:768px){
+    .kbd-tip{display:none;}
+  }
+</style>
+
+<div class="top-progress" id="topProgress"></div>
+<div class="spotlight"></div>
+
+<div class="floating-tools">
+  <button class="tool-btn" id="themeToggle" title="Theme">🌙</button>
+  <button class="tool-btn back-to-top" id="backToTop" title="Top">↑</button>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<div class="kbd-tip">Quick search ke liye <span class="kbd">/</span> dabao</div>
+
+<script>
+(() => {
+  const $ = (s, p = document) => p.querySelector(s);
+  const $$ = (s, p = document) => [...p.querySelectorAll(s)];
+
+  // ---------- Toast ----------
+  const toastWrap = $("#toastWrap");
+  function showToast(msg = "Done") {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.textContent = msg;
+    toastWrap.appendChild(t);
+    setTimeout(() => {
+      t.style.opacity = "0";
+      t.style.transform = "translateY(8px)";
+      setTimeout(() => t.remove(), 250);
+    }, 2200);
+  }
+
+  // ---------- Theme Toggle ----------
+  const themeToggle = $("#themeToggle");
+  const savedTheme = localStorage.getItem("site-theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    themeToggle.textContent = "☀️";
+  }
+
+  themeToggle?.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+    const isLight = document.body.classList.contains("light-mode");
+    localStorage.setItem("site-theme", isLight ? "light" : "dark");
+    themeToggle.textContent = isLight ? "☀️" : "🌙";
+    showToast(isLight ? "Light mode on" : "Dark mode on");
+  });
+
+  // ---------- Back To Top ----------
+  const backToTop = $("#backToTop");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) backToTop.classList.add("show");
+    else backToTop.classList.remove("show");
+  });
+
+  backToTop?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // ---------- Top Progress ----------
+  const topProgress = $("#topProgress");
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    topProgress.style.width = progress + "%";
+  }
+  window.addEventListener("scroll", updateProgress);
+  window.addEventListener("resize", updateProgress);
+  updateProgress();
+
+  // ---------- Reveal on Scroll ----------
+  function prepareReveal() {
+    const candidates = $$("section, .card, .movie-card, .item, .box, .content-block, .feature, .glass-card");
+    candidates.forEach(el => el.classList.add("reveal"));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("active");
+      });
+    }, { threshold: 0.12 });
+    candidates.forEach(el => io.observe(el));
+  }
+  prepareReveal();
+
+  // ---------- Mouse Spotlight ----------
+  window.addEventListener("mousemove", (e) => {
+    document.documentElement.style.setProperty("--mx", e.clientX + "px");
+    document.documentElement.style.setProperty("--my", e.clientY + "px");
+  });
+
+  // ---------- Lazy Load Images ----------
+  $$("img").forEach(img => {
+    if (!img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
+    if (!img.hasAttribute("decoding")) img.setAttribute("decoding", "async");
+  });
+
+  // ---------- Image Loaded Animation ----------
+  $$("img").forEach(img => {
+    if (!img.complete) {
+      img.classList.add("skeleton");
+      img.addEventListener("load", () => img.classList.remove("skeleton"));
+      img.addEventListener("error", () => img.classList.remove("skeleton"));
+    }
+  });
+
+  // ---------- Search Shortcut "/" ----------
+  const searchInput =
+    $("#searchInput") ||
+    $('input[type="search"]') ||
+    $('input[placeholder*="Search"]') ||
+    $('input[placeholder*="search"]');
+
+  document.addEventListener("keydown", (e) => {
+    const tag = document.activeElement?.tagName?.toLowerCase();
+    const typing = tag === "input" || tag === "textarea";
+    if (e.key === "/" && !typing && searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select?.();
+      showToast("Search ready");
+    }
+  });
+
+  // ---------- Search Highlight ----------
+  if (searchInput) {
+    let timer;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const q = searchInput.value.trim().toLowerCase();
+        const cards = $$(".movie-card, .card, .item, .box");
+        cards.forEach(c => c.classList.remove("search-highlight"));
+
+        if (!q) return;
+        const match = cards.find(c => c.innerText.toLowerCase().includes(q));
+        if (match) {
+          match.classList.add("search-highlight");
+          match.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 250);
+    });
+  }
+
+  // ---------- Recently Visited Items ----------
+  $$("[data-title]").forEach(item => {
+    item.addEventListener("click", () => {
+      const title = item.getAttribute("data-title");
+      if (!title) return;
+      const old = JSON.parse(localStorage.getItem("recent-items") || "[]");
+      const updated = [title, ...old.filter(x => x !== title)].slice(0, 8);
+      localStorage.setItem("recent-items", JSON.stringify(updated));
+    });
+  });
+
+  // ---------- Page Ready ----------
+  window.addEventListener("load", () => {
+    showToast("Advanced UI loaded");
+  });
+})();
+</script>
 </body>
   </html>
